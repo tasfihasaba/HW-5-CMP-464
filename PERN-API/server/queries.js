@@ -1,34 +1,32 @@
-// Connect to Postgres using the node-postgres package
+const express = require('express');
+const { Pool } = require('pg');
 
-const POOL = require('pg').Pool
+const app = express();
 
-const pool = new POOL({
+
+const pool = new Pool({
   user: 'me',
   host: 'localhost',
   database: 'favlinks',
   password: 'password',
   port: 5432,
-})
+});
 
-// Create all the functions that will be our request handlers in our express server
-
-// Create a new link in the db
-
-// Read all the data from db
 
 const getLinks = (req, res) => {
   pool.query('SELECT * FROM links ORDER BY id ASC', (error, result) => {
     if (error) {
-      throw error
+      res.status(500).json({ error: 'Error retrieving links' });
+    } else {
+      res.status(200).json(result.rows);
     }
-    res.status(200).json(result.rows)
-  })
-}
+  });
+};
 
-// Update link in the db
+app.get('/links', getLinks);
 
-// Delete link in the db
 
-module.exports = {
-  getLinks,
-}
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+
