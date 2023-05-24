@@ -22,7 +22,7 @@ const getLinks = (req, res) => {
 };
 
 const createLink = (req, res) => {
-  const { title, url } = req.body; // Assuming title and url are provided in the request body
+  const { title, url } = req.body; 
 
   if (!title || !url) {
     res.status(400).json({ error: 'Title and URL are required' });
@@ -43,8 +43,7 @@ const createLink = (req, res) => {
 };
 
 const updateLink = (req, res) => {
-  const { id, title, url } = req.body; // Assuming id, title, and url are provided in the request body
-
+  const { id, title, url } = req.body; 
   if (!id || !title || !url) {
     res.status(400).json({ error: 'ID, title, and URL are required' });
     return;
@@ -64,7 +63,7 @@ const updateLink = (req, res) => {
 };
 
 const deleteLink = (req, res) => {
-  const id = req.params.id; // Assuming the link ID is passed as a route parameter
+  const id = req.params.id; 
 
   pool.query('DELETE FROM links WHERE id = $1', [id], (error) => {
     if (error) {
