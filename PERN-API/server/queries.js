@@ -21,33 +21,19 @@ const getLinks = (req, res) => {
   });
 };
 
-const createLink = (req, res) => {
-  const { title, url } = req.body; // Assuming title and url are provided in the request body
-
-  if (!title || !url) {
-    res.status(400).json({ error: 'Title and URL are required' });
-    return;
-  }
-
-  pool.query(
-    'INSERT INTO links (title, url) VALUES ($1, $2)',
-    [title, url],
-    (error) => {
-      if (error) {
-        res.status(500).json({ error: 'Error creating link' });
-      } else {
-        res.status(201).json({ message: 'Link created successfully' });
-      }
+const getAllData = (req, res) => {
+  pool.query('SELECT * FROM links', (error, result) => {
+    if (error) {
+      res.status(500).json({ error: 'Error retrieving data' });
+    } else {
+      res.status(200).json(result.rows);
     }
-  );
+  });
 };
 
-app.use(express.json());
-
 app.get('/links', getLinks);
-app.post('/links', createLink);
+app.get('/alldata', getAllData);
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
-
